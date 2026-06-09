@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import override
 
-from infrared_protocols import Command as InfraredCommand
+from infrared_protocols.commands import Command as InfraredCommand
 
 PREAMBLE_HIGH = 6200
 PREAMBLE_LOW = 2800
