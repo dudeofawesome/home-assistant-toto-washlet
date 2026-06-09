@@ -1,0 +1,11 @@
+{
+  "domain": "toto_washlet",
+  "name": "TOTO Washlet",
+  "version": "0.0.1",
+  "codeowners": [],
+  "config_flow": true,
+  "dependencies": ["infrared"],
+  "documentation": "https://github.com/dudeofawesome/home-assistant-toto-washlet",
+  "integration_type": "device",
+  "iot_class": "assumed_state"
+}
