@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
+from homeassistant.components.infrared import InfraredEmitterConsumerEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
@@ -130,7 +131,9 @@ async def async_setup_entry(
     )
 
 
-class TotoWashletButton(TotoWashletEntity, ButtonEntity):
+class TotoWashletButton(
+    TotoWashletEntity, InfraredEmitterConsumerEntity, ButtonEntity
+):
     """TOTO Washlet button entity."""
 
     entity_description: TotoWashletButtonEntityDescription
@@ -142,9 +145,10 @@ class TotoWashletButton(TotoWashletEntity, ButtonEntity):
         description: TotoWashletButtonEntityDescription,
     ) -> None:
         """Initialize TOTO Washlet button."""
-        super().__init__(entry, infrared_entity_id, unique_id_suffix=description.key)
+        super().__init__(entry, unique_id_suffix=description.key)
+        self._infrared_emitter_entity_id = infrared_entity_id
         self.entity_description = description
 
     async def async_press(self) -> None:
         """Press the button."""
-        await self._send_command(self.entity_description.command_code)
+        await self._send_command(self.entity_description.command_code.to_command())

@@ -19,6 +19,9 @@ BIT_ZERO_LOW = 550
 FRAME_GAP = 36000
 MODULATION = 38000
 TOTO_HEADER = 0x2008
+TOTO_HEADER_BITS = 15
+TOTO_PAYLOAD_BITS = 24
+TOLERANCE = 0.35
 
 
 @dataclass(frozen=True)
@@ -62,6 +65,24 @@ class TotoWashletCode(Enum):
         """Build a TOTO command for this Washlet code."""
         return TotoCommand(self.value)
 
+    @classmethod
+    def from_raw_timings(cls, timings: list[int]) -> TotoWashletCode | None:
+        """Decode raw IR timings into a known TOTO Washlet code."""
+        frames = _decode_timings(timings)
+        if not frames:
+            return None
+
+        for code in cls:
+            if tuple(frames) == code.value:
+                return code
+
+        if len(frames) == 1:
+            for code in cls:
+                if frames[0] == code.value[0] and len(code.value) == 1:
+                    return code
+
+        return None
+
 
 class TotoCommand(InfraredCommand):
     """TOTO infrared command."""
@@ -94,8 +115,8 @@ class TotoCommand(InfraredCommand):
 def _encode_frame(frame: TotoData) -> list[int]:
     """Encode one TOTO frame."""
     timings = [PREAMBLE_HIGH, -PREAMBLE_LOW]
-    _append_bits(timings, TOTO_HEADER, 15)
-    _append_bits(timings, frame.payload, 24)
+    _append_bits(timings, TOTO_HEADER, TOTO_HEADER_BITS)
+    _append_bits(timings, frame.payload, TOTO_PAYLOAD_BITS)
     timings.append(BIT_HIGH)
     return timings
 
@@ -105,3 +126,92 @@ def _append_bits(timings: list[int], value: int, bit_count: int) -> None:
     for bit in range(bit_count - 1, -1, -1):
         timings.append(BIT_HIGH)
         timings.append(-BIT_ONE_LOW if value & (1 << bit) else -BIT_ZERO_LOW)
+
+
+def _decode_timings(timings: list[int]) -> list[TotoData] | None:
+    """Decode raw timings into de-duplicated TOTO frames."""
+    frames: list[TotoData] = []
+    index = 0
+    while index < len(timings):
+        frame = _decode_frame_at(timings, index)
+        if frame is None:
+            index += 1
+            continue
+
+        if not frames or frames[-1] != frame:
+            frames.append(frame)
+        index += _encoded_frame_length()
+
+    return frames or None
+
+
+def _decode_frame_at(timings: list[int], index: int) -> TotoData | None:
+    """Decode a single TOTO frame starting at an index."""
+    if index + _encoded_frame_length() > len(timings):
+        return None
+
+    if not _matches_mark(timings[index], PREAMBLE_HIGH) or not _matches_space(
+        timings[index + 1], PREAMBLE_LOW
+    ):
+        return None
+
+    index += 2
+    header = _decode_bits(timings, index, TOTO_HEADER_BITS)
+    if header != TOTO_HEADER:
+        return None
+
+    index += TOTO_HEADER_BITS * 2
+    payload = _decode_bits(timings, index, TOTO_PAYLOAD_BITS)
+    if payload is None:
+        return None
+
+    checksum = payload & 0xFF
+    expected_checksum = ((payload & 0xFF0000) >> 16) ^ ((payload & 0x00FF00) >> 8)
+    if checksum != expected_checksum:
+        return None
+
+    return TotoData(
+        command=(payload >> 8) & 0xFF,
+        rc_code_1=(payload >> 20) & 0xF,
+        rc_code_2=(payload >> 16) & 0xF,
+    )
+
+
+def _decode_bits(timings: list[int], index: int, bit_count: int) -> int | None:
+    """Decode MSB-first TOTO bits."""
+    value = 0
+    for _ in range(bit_count):
+        if not _matches_mark(timings[index], BIT_HIGH):
+            return None
+
+        space = timings[index + 1]
+        if _matches_space(space, BIT_ONE_LOW):
+            value = (value << 1) | 1
+        elif _matches_space(space, BIT_ZERO_LOW):
+            value <<= 1
+        else:
+            return None
+
+        index += 2
+
+    return value
+
+
+def _matches_mark(value: int, expected: int) -> bool:
+    """Return whether a timing matches an IR mark."""
+    return value > 0 and _matches_duration(value, expected)
+
+
+def _matches_space(value: int, expected: int) -> bool:
+    """Return whether a timing matches an IR space."""
+    return value < 0 and _matches_duration(abs(value), expected)
+
+
+def _matches_duration(value: int, expected: int) -> bool:
+    """Return whether a timing is within protocol tolerance."""
+    return abs(value - expected) <= expected * TOLERANCE
+
+
+def _encoded_frame_length() -> int:
+    """Return the number of timings in one encoded TOTO frame."""
+    return 2 + (TOTO_HEADER_BITS + TOTO_PAYLOAD_BITS) * 2 + 1

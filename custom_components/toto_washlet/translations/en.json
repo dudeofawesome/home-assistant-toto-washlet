@@ -7,13 +7,32 @@
     "step": {
       "user": {
         "data": {
-          "infrared_entity_id": "Infrared transmitter"
+          "infrared_entity_id": "Infrared transmitter",
+          "infrared_receiver_entity_id": "Infrared receiver"
         },
         "data_description": {
-          "infrared_entity_id": "The infrared transmitter entity to use for sending commands."
+          "infrared_entity_id": "The infrared transmitter entity to use for sending commands.",
+          "infrared_receiver_entity_id": "The optional infrared receiver entity to use for received remote commands."
         },
         "description": "Select the infrared transmitter entity to use for controlling your TOTO Washlet.",
         "title": "Set up TOTO Washlet"
+      }
+    }
+  },
+  "options": {
+    "abort": {
+      "no_receivers": "No infrared receiver entities found. Please set up an infrared receiver first."
+    },
+    "step": {
+      "init": {
+        "data": {
+          "infrared_receiver_entity_id": "Infrared receiver"
+        },
+        "data_description": {
+          "infrared_receiver_entity_id": "The infrared receiver entity to use for received remote commands."
+        },
+        "description": "Select the infrared receiver entity to use for received TOTO Washlet remote commands.",
+        "title": "TOTO Washlet options"
       }
     }
   },
@@ -63,6 +82,11 @@
       },
       "user_2": {
         "name": "User 2"
+      }
+    },
+    "event": {
+      "received_command": {
+        "name": "Received command"
       }
     }
   }
