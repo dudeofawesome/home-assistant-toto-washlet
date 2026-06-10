@@ -51,7 +51,7 @@ BUTTON_DESCRIPTIONS: tuple[TotoWashletButtonEntityDescription, ...] = (
     TotoWashletButtonEntityDescription(
         key="oscillate",
         translation_key="oscillate",
-        icon="mdi:swap-horizontal",
+        icon="mdi:arrow-oscillating",
         command_code=TotoWashletCode.OSCILLATE,
     ),
     TotoWashletButtonEntityDescription(
