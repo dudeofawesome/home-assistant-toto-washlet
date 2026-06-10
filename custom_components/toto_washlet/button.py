@@ -34,7 +34,7 @@ BUTTON_DESCRIPTIONS: tuple[TotoWashletButtonEntityDescription, ...] = (
     TotoWashletButtonEntityDescription(
         key="rear",
         translation_key="rear",
-        icon="mdi:shower-head",
+        icon="mdi:wiper-wash",
         command_code=TotoWashletCode.REAR,
     ),
     TotoWashletButtonEntityDescription(
@@ -46,7 +46,7 @@ BUTTON_DESCRIPTIONS: tuple[TotoWashletButtonEntityDescription, ...] = (
     TotoWashletButtonEntityDescription(
         key="front",
         translation_key="front",
-        icon="mdi:spray",
+        icon="mdi:shower-head",
         command_code=TotoWashletCode.FRONT,
     ),
     TotoWashletButtonEntityDescription(
@@ -100,13 +100,13 @@ BUTTON_DESCRIPTIONS: tuple[TotoWashletButtonEntityDescription, ...] = (
     TotoWashletButtonEntityDescription(
         key="full_flush",
         translation_key="full_flush",
-        icon="mdi:water-pump",
+        icon="mdi:water",
         command_code=TotoWashletCode.FULL_FLUSH,
     ),
     TotoWashletButtonEntityDescription(
         key="light_flush",
         translation_key="light_flush",
-        icon="mdi:water",
+        icon="mdi:water-outline",
         command_code=TotoWashletCode.LIGHT_FLUSH,
     ),
     TotoWashletButtonEntityDescription(
