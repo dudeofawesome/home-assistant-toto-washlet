@@ -25,64 +25,93 @@ class TotoWashletButtonEntityDescription(ButtonEntityDescription):
 
 BUTTON_DESCRIPTIONS: tuple[TotoWashletButtonEntityDescription, ...] = (
     TotoWashletButtonEntityDescription(
-        key="stop", translation_key="stop", command_code=TotoWashletCode.STOP
+        key="stop",
+        translation_key="stop",
+        icon="mdi:stop",
+        command_code=TotoWashletCode.STOP,
     ),
     TotoWashletButtonEntityDescription(
-        key="rear", translation_key="rear", command_code=TotoWashletCode.REAR
+        key="rear",
+        translation_key="rear",
+        icon="mdi:shower-head",
+        command_code=TotoWashletCode.REAR,
     ),
     TotoWashletButtonEntityDescription(
         key="soft_rear",
         translation_key="soft_rear",
+        icon="mdi:water-opacity",
         command_code=TotoWashletCode.SOFT_REAR,
     ),
     TotoWashletButtonEntityDescription(
-        key="front", translation_key="front", command_code=TotoWashletCode.FRONT
+        key="front",
+        translation_key="front",
+        icon="mdi:spray",
+        command_code=TotoWashletCode.FRONT,
     ),
     TotoWashletButtonEntityDescription(
         key="oscillate",
         translation_key="oscillate",
+        icon="mdi:swap-horizontal",
         command_code=TotoWashletCode.OSCILLATE,
     ),
     TotoWashletButtonEntityDescription(
-        key="pulsate", translation_key="pulsate", command_code=TotoWashletCode.PULSATE
+        key="pulsate",
+        translation_key="pulsate",
+        icon="mdi:pulse",
+        command_code=TotoWashletCode.PULSATE,
     ),
     TotoWashletButtonEntityDescription(
-        key="dryer", translation_key="dryer", command_code=TotoWashletCode.DRYER
+        key="dryer",
+        translation_key="dryer",
+        icon="mdi:fan",
+        command_code=TotoWashletCode.DRYER,
     ),
     TotoWashletButtonEntityDescription(
         key="power_deodorizer",
         translation_key="power_deodorizer",
+        icon="mdi:air-filter",
         command_code=TotoWashletCode.POWER_DEODORIZER,
     ),
     TotoWashletButtonEntityDescription(
-        key="user_1", translation_key="user_1", command_code=TotoWashletCode.USER_1
+        key="user_1",
+        translation_key="user_1",
+        icon="mdi:account",
+        command_code=TotoWashletCode.USER_1,
     ),
     TotoWashletButtonEntityDescription(
-        key="user_2", translation_key="user_2", command_code=TotoWashletCode.USER_2
+        key="user_2",
+        translation_key="user_2",
+        icon="mdi:account",
+        command_code=TotoWashletCode.USER_2,
     ),
     TotoWashletButtonEntityDescription(
         key="lid_open_close",
         translation_key="lid_open_close",
+        icon="mdi:toilet",
         command_code=TotoWashletCode.LID_OPEN_CLOSE,
     ),
     TotoWashletButtonEntityDescription(
         key="seat_open_close",
         translation_key="seat_open_close",
+        icon="mdi:seat",
         command_code=TotoWashletCode.SEAT_OPEN_CLOSE,
     ),
     TotoWashletButtonEntityDescription(
         key="full_flush",
         translation_key="full_flush",
+        icon="mdi:water-pump",
         command_code=TotoWashletCode.FULL_FLUSH,
     ),
     TotoWashletButtonEntityDescription(
         key="light_flush",
         translation_key="light_flush",
+        icon="mdi:water",
         command_code=TotoWashletCode.LIGHT_FLUSH,
     ),
     TotoWashletButtonEntityDescription(
         key="eco_flush",
         translation_key="eco_flush",
+        icon="mdi:leaf",
         command_code=TotoWashletCode.ECO_FLUSH,
     ),
 )
