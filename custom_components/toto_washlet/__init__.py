@@ -7,11 +7,10 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 
 PLATFORMS = [
-    # Platform.BINARY_SENSOR,
     Platform.BUTTON,
     Platform.EVENT,
-    # Platform.SWITCH,
-    # Platform.SELECT,
+    Platform.SELECT,
+    Platform.SWITCH,
 ]
 
 

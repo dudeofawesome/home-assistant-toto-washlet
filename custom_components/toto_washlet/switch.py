@@ -1,0 +1,99 @@
+"""Switch platform for the TOTO Washlet integration."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+from homeassistant.components.infrared import InfraredEmitterConsumerEntity
+from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import STATE_ON
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from homeassistant.helpers.restore_state import RestoreEntity
+
+from .commands import TotoWashletCode
+from .const import CONF_INFRARED_ENTITY_ID
+from .entity import TotoWashletEntity
+
+PARALLEL_UPDATES = 1
+
+
+@dataclass(frozen=True, kw_only=True)
+class TotoWashletSwitchEntityDescription(SwitchEntityDescription):
+    """Describes TOTO Washlet switch entity."""
+
+    turn_on_command_code: TotoWashletCode
+    turn_off_command_code: TotoWashletCode
+
+
+SWITCH_DESCRIPTIONS: tuple[TotoWashletSwitchEntityDescription, ...] = (
+    TotoWashletSwitchEntityDescription(
+        key="auto_flush",
+        translation_key="auto_flush",
+        icon="mdi:water-sync",
+        turn_on_command_code=TotoWashletCode.AUTO_FLUSH_ON,
+        turn_off_command_code=TotoWashletCode.AUTO_FLUSH_OFF,
+    ),
+    TotoWashletSwitchEntityDescription(
+        key="auto_lid_open",
+        translation_key="auto_lid_open",
+        icon="mdi:toilet",
+        turn_on_command_code=TotoWashletCode.AUTO_LID_OPEN_ON,
+        turn_off_command_code=TotoWashletCode.AUTO_LID_OPEN_OFF,
+    ),
+)
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
+) -> None:
+    """Set up TOTO Washlet switches from config entry."""
+    infrared_entity_id = entry.data[CONF_INFRARED_ENTITY_ID]
+    async_add_entities(
+        TotoWashletSwitch(entry, infrared_entity_id, description)
+        for description in SWITCH_DESCRIPTIONS
+    )
+
+
+class TotoWashletSwitch(
+    TotoWashletEntity, InfraredEmitterConsumerEntity, RestoreEntity, SwitchEntity
+):
+    """TOTO Washlet switch entity."""
+
+    entity_description: TotoWashletSwitchEntityDescription
+
+    def __init__(
+        self,
+        entry: ConfigEntry,
+        infrared_entity_id: str,
+        description: TotoWashletSwitchEntityDescription,
+    ) -> None:
+        """Initialize TOTO Washlet switch."""
+        super().__init__(entry, unique_id_suffix=description.key)
+        self._attr_is_on: bool | None = None
+        self._infrared_emitter_entity_id = infrared_entity_id
+        self.entity_description = description
+
+    async def async_added_to_hass(self) -> None:
+        """Restore the last assumed state."""
+        if (last_state := await self.async_get_last_state()) is not None:
+            self._attr_is_on = last_state.state == STATE_ON
+
+    async def async_turn_on(self, **kwargs: object) -> None:
+        """Turn on the Washlet setting."""
+        await self._send_command(
+            self.entity_description.turn_on_command_code.to_command()
+        )
+        self._attr_is_on = True
+        self.async_write_ha_state()
+
+    async def async_turn_off(self, **kwargs: object) -> None:
+        """Turn off the Washlet setting."""
+        await self._send_command(
+            self.entity_description.turn_off_command_code.to_command()
+        )
+        self._attr_is_on = False
+        self.async_write_ha_state()

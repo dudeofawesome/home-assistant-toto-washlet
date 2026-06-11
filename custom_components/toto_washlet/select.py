@@ -1,0 +1,126 @@
+"""Select platform for the TOTO Washlet integration."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+from homeassistant.components.infrared import InfraredEmitterConsumerEntity
+from homeassistant.components.select import SelectEntity, SelectEntityDescription
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from homeassistant.helpers.restore_state import RestoreEntity
+
+from .commands import TotoWashletCode
+from .const import CONF_INFRARED_ENTITY_ID
+from .entity import TotoWashletEntity
+
+PARALLEL_UPDATES = 1
+
+
+@dataclass(frozen=True, kw_only=True)
+class TotoWashletSelectOption:
+    """Describes a TOTO Washlet select option."""
+
+    option: str
+    command_code: TotoWashletCode
+
+
+@dataclass(frozen=True, kw_only=True)
+class TotoWashletSelectEntityDescription(SelectEntityDescription):
+    """Describes TOTO Washlet select entity."""
+
+    washlet_options: tuple[TotoWashletSelectOption, ...]
+
+
+SELECT_DESCRIPTIONS: tuple[TotoWashletSelectEntityDescription, ...] = (
+    TotoWashletSelectEntityDescription(
+        key="energy_saver",
+        translation_key="energy_saver",
+        icon="mdi:leaf",
+        washlet_options=(
+            TotoWashletSelectOption(
+                option="off",
+                command_code=TotoWashletCode.AUTO_ENERGY_SAVER_OFF,
+            ),
+            TotoWashletSelectOption(
+                option="auto",
+                command_code=TotoWashletCode.AUTO_ENERGY_SAVER,
+            ),
+            TotoWashletSelectOption(
+                option="auto_plus",
+                command_code=TotoWashletCode.AUTO_ENERGY_SAVER_PLUS,
+            ),
+        ),
+    ),
+    TotoWashletSelectEntityDescription(
+        key="timer_energy_saver",
+        translation_key="timer_energy_saver",
+        icon="mdi:timer-cog",
+        washlet_options=(
+            TotoWashletSelectOption(
+                option="off",
+                command_code=TotoWashletCode.TIMER_ENERGY_SAVER_OFF,
+            ),
+            TotoWashletSelectOption(
+                option="6",
+                command_code=TotoWashletCode.TIMER_ENERGY_SAVER_6,
+            ),
+        ),
+    ),
+)
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
+) -> None:
+    """Set up TOTO Washlet selects from config entry."""
+    infrared_entity_id = entry.data[CONF_INFRARED_ENTITY_ID]
+    async_add_entities(
+        TotoWashletSelect(entry, infrared_entity_id, description)
+        for description in SELECT_DESCRIPTIONS
+    )
+
+
+class TotoWashletSelect(
+    TotoWashletEntity, InfraredEmitterConsumerEntity, RestoreEntity, SelectEntity
+):
+    """TOTO Washlet select entity."""
+
+    entity_description: TotoWashletSelectEntityDescription
+
+    def __init__(
+        self,
+        entry: ConfigEntry,
+        infrared_entity_id: str,
+        description: TotoWashletSelectEntityDescription,
+    ) -> None:
+        """Initialize TOTO Washlet select."""
+        super().__init__(entry, unique_id_suffix=description.key)
+        self._attr_options = [
+            option.option for option in description.washlet_options
+        ]
+        self._attr_current_option: str | None = None
+        self._infrared_emitter_entity_id = infrared_entity_id
+        self.entity_description = description
+
+    async def async_added_to_hass(self) -> None:
+        """Restore the last assumed option."""
+        if (
+            (last_state := await self.async_get_last_state()) is not None
+            and last_state.state in self.options
+        ):
+            self._attr_current_option = last_state.state
+
+    async def async_select_option(self, option: str) -> None:
+        """Select a Washlet setting option."""
+        command_code = next(
+            washlet_option.command_code
+            for washlet_option in self.entity_description.washlet_options
+            if washlet_option.option == option
+        )
+        await self._send_command(command_code.to_command())
+        self._attr_current_option = option
+        self.async_write_ha_state()

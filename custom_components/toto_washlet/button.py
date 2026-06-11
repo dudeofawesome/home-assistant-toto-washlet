@@ -8,6 +8,7 @@ from homeassistant.components.button import ButtonEntity, ButtonEntityDescriptio
 from homeassistant.components.infrared import InfraredEmitterConsumerEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .commands import TotoWashletCode
@@ -50,6 +51,12 @@ BUTTON_DESCRIPTIONS: tuple[TotoWashletButtonEntityDescription, ...] = (
         command_code=TotoWashletCode.FRONT,
     ),
     TotoWashletButtonEntityDescription(
+        key="soft_front",
+        translation_key="soft_front",
+        icon="mdi:water-opacity",
+        command_code=TotoWashletCode.SOFT_FRONT,
+    ),
+    TotoWashletButtonEntityDescription(
         key="oscillate",
         translation_key="oscillate",
         icon="mdi:arrow-oscillating",
@@ -72,6 +79,73 @@ BUTTON_DESCRIPTIONS: tuple[TotoWashletButtonEntityDescription, ...] = (
         translation_key="power_deodorizer",
         icon="mdi:air-filter",
         command_code=TotoWashletCode.POWER_DEODORIZER,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="wand_clean",
+        translation_key="wand_clean",
+        icon="mdi:spray-bottle",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        command_code=TotoWashletCode.WAND_CLEAN,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="manual_nozzle_cleaning",
+        translation_key="manual_nozzle_cleaning",
+        icon="mdi:spray",
+        command_code=TotoWashletCode.MANUAL_NOZZLE_CLEANING,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="manual_premist",
+        translation_key="manual_premist",
+        icon="mdi:water",
+        command_code=TotoWashletCode.MANUAL_PREMIST,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="lower_water",
+        translation_key="lower_water",
+        icon="mdi:water-minus",
+        command_code=TotoWashletCode.LOWER_WATER,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="nozzle_up",
+        translation_key="nozzle_up",
+        icon="mdi:arrow-up",
+        command_code=TotoWashletCode.NOZZLE_UP,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="nozzle_down",
+        translation_key="nozzle_down",
+        icon="mdi:arrow-down",
+        command_code=TotoWashletCode.NOZZLE_DOWN,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="pressure_level_4",
+        translation_key="pressure_level_4",
+        icon="mdi:water-minus",
+        command_code=TotoWashletCode.PRESSURE_LEVEL_4,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="pressure_level_12",
+        translation_key="pressure_level_12",
+        icon="mdi:water-plus",
+        command_code=TotoWashletCode.PRESSURE_LEVEL_12,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="water_temperature_2",
+        translation_key="water_temperature_2",
+        icon="mdi:thermometer-water",
+        command_code=TotoWashletCode.WATER_TEMPERATURE_2,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="dryer_air_temperature_4",
+        translation_key="dryer_air_temperature_4",
+        icon="mdi:thermometer",
+        command_code=TotoWashletCode.DRYER_AIR_TEMPERATURE_4,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="seat_temperature_3",
+        translation_key="seat_temperature_3",
+        icon="mdi:thermometer",
+        command_code=TotoWashletCode.SEAT_TEMPERATURE_3,
     ),
     TotoWashletButtonEntityDescription(
         key="user_1",
@@ -114,6 +188,13 @@ BUTTON_DESCRIPTIONS: tuple[TotoWashletButtonEntityDescription, ...] = (
         translation_key="eco_flush",
         icon="mdi:leaf",
         command_code=TotoWashletCode.ECO_FLUSH,
+    ),
+    TotoWashletButtonEntityDescription(
+        key="mystery",
+        translation_key="mystery",
+        icon="mdi:help-circle",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        command_code=TotoWashletCode.MYSTERY,
     ),
 )
 

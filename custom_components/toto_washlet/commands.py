@@ -45,11 +45,24 @@ class TotoData:
 class TotoWashletCode(Enum):
     """TOTO Washlet IR command codes."""
 
-    STOP = (TotoData(0x00),)
-    REAR = (TotoData(0xA8, 0x6, 0x2),)
-    USER_1 = (TotoData(0x95, 0x6, 0x1),)
-    USER_2 = (TotoData(0x95, 0x6, 0x2),)
-    OSCILLATE = (TotoData(0x60),)
+    STOP = (TotoData(0xDA, 0xA, 0xA), TotoData(0x00))
+    REAR = (TotoData(0x80, 0x2, 0xC),)
+    SOFT_REAR = (TotoData(0xA8, 0x2, 0xC),)
+    FRONT = (TotoData(0x40, 0x2, 0xC),)
+    SOFT_FRONT = (TotoData(0x91, 0x2, 0xC),)
+    USER_1 = (
+        TotoData(0xD5),
+        TotoData(0x95, 0x2, 0x8),
+        TotoData(0x55, 0xD),
+    )
+    USER_2 = (
+        TotoData(0xD5),
+        TotoData(0x95, 0x2, 0x8),
+        TotoData(0xD5, 0x4),
+        TotoData(0x95, 0x4, 0xC),
+        TotoData(0x55, 0xD),
+    )
+    OSCILLATE = (TotoData(0x60), TotoData(0x10))
     PULSATE = (TotoData(0xE0),)
     LID_OPEN_CLOSE = (TotoData(0x0E),)
     SEAT_OPEN_CLOSE = (TotoData(0xF6),)
@@ -58,8 +71,27 @@ class TotoWashletCode(Enum):
     ECO_FLUSH = (TotoData(0xB6),)
     DRYER = (TotoData(0xC0),)
     POWER_DEODORIZER = (TotoData(0x7C),)
-    FRONT = (TotoData(0x10), TotoData(0x40, 0xA, 0xC))
-    SOFT_REAR = (TotoData(0x60), TotoData(0xA8, 0xA, 0xC))
+    WAND_CLEAN = (TotoData(0x11),)
+    MANUAL_NOZZLE_CLEANING = (TotoData(0x74),)
+    MANUAL_PREMIST = (TotoData(0x59),)
+    LOWER_WATER = (TotoData(0x12),)
+    NOZZLE_UP = (TotoData(0xA0, 0x0, 0x2),)
+    NOZZLE_DOWN = (TotoData(0xA0, 0x0, 0xC),)
+    PRESSURE_LEVEL_4 = (TotoData(0x20, 0x4),)
+    PRESSURE_LEVEL_12 = (TotoData(0x20, 0xC),)
+    WATER_TEMPERATURE_2 = (TotoData(0xEC, 0xA, 0x9),)
+    DRYER_AIR_TEMPERATURE_4 = (TotoData(0x1C, 0x2),)
+    SEAT_TEMPERATURE_3 = (TotoData(0xEC, 0x1, 0x1),)
+    AUTO_ENERGY_SAVER = (TotoData(0x34),)
+    AUTO_ENERGY_SAVER_PLUS = (TotoData(0x2A),)
+    AUTO_ENERGY_SAVER_OFF = (TotoData(0xB4),)
+    TIMER_ENERGY_SAVER_6 = (TotoData(0x68, 0x6),)
+    TIMER_ENERGY_SAVER_OFF = (TotoData(0x68),)
+    AUTO_LID_OPEN_OFF = (TotoData(0x5C),)
+    AUTO_LID_OPEN_ON = (TotoData(0x9C),)
+    AUTO_FLUSH_OFF = (TotoData(0x3C),)
+    AUTO_FLUSH_ON = (TotoData(0xDC),)
+    MYSTERY = (TotoData(0x3D),)
 
     def to_command(self) -> TotoCommand:
         """Build a TOTO command for this Washlet code."""
