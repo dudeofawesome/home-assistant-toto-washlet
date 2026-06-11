@@ -148,18 +148,6 @@ BUTTON_DESCRIPTIONS: tuple[TotoWashletButtonEntityDescription, ...] = (
         command_code=TotoWashletCode.SEAT_TEMPERATURE_3,
     ),
     TotoWashletButtonEntityDescription(
-        key="user_1",
-        translation_key="user_1",
-        icon="mdi:account",
-        command_code=TotoWashletCode.USER_1,
-    ),
-    TotoWashletButtonEntityDescription(
-        key="user_2",
-        translation_key="user_2",
-        icon="mdi:account",
-        command_code=TotoWashletCode.USER_2,
-    ),
-    TotoWashletButtonEntityDescription(
         key="lid_open_close",
         translation_key="lid_open_close",
         icon="mdi:toilet",

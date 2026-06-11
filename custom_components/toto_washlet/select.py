@@ -35,6 +35,29 @@ class TotoWashletSelectEntityDescription(SelectEntityDescription):
 
 SELECT_DESCRIPTIONS: tuple[TotoWashletSelectEntityDescription, ...] = (
     TotoWashletSelectEntityDescription(
+        key="user_profile",
+        translation_key="user_profile",
+        icon="mdi:account",
+        washlet_options=(
+            TotoWashletSelectOption(
+                option="1",
+                command_code=TotoWashletCode.USER_PROFILE_1,
+            ),
+            TotoWashletSelectOption(
+                option="2",
+                command_code=TotoWashletCode.USER_PROFILE_2,
+            ),
+            TotoWashletSelectOption(
+                option="3",
+                command_code=TotoWashletCode.USER_PROFILE_3,
+            ),
+            TotoWashletSelectOption(
+                option="4",
+                command_code=TotoWashletCode.USER_PROFILE_4,
+            ),
+        ),
+    ),
+    TotoWashletSelectEntityDescription(
         key="energy_saver",
         translation_key="energy_saver",
         icon="mdi:leaf",
