@@ -11,10 +11,11 @@ from homeassistant.components.infrared import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .commands import TotoWashletCode
-from .const import CONF_INFRARED_RECEIVER_ENTITY_ID
+from .const import CONF_INFRARED_RECEIVER_ENTITY_ID, received_command_signal
 from .entity import TotoWashletEntity
 
 _LOGGER = logging.getLogger(__name__)
@@ -56,6 +57,7 @@ class TotoWashletReceivedCommandEvent(
     def __init__(self, entry: ConfigEntry, receiver_entity_id: str) -> None:
         """Initialize the event entity."""
         super().__init__(entry, unique_id_suffix="received_command")
+        self._entry_id = entry.entry_id
         self._infrared_receiver_entity_id = receiver_entity_id
 
     @callback
@@ -66,6 +68,11 @@ class TotoWashletReceivedCommandEvent(
             event_type = _EVENT_TYPE_UNKNOWN
         else:
             event_type = _COMMAND_CODE_TO_EVENT_TYPE[command_code]
+            async_dispatcher_send(
+                self.hass,
+                received_command_signal(self._entry_id),
+                command_code,
+            )
 
         _LOGGER.debug("Received TOTO Washlet IR command: %s", event_type)
         self._trigger_event(event_type)

@@ -8,12 +8,13 @@ from homeassistant.components.infrared import InfraredEmitterConsumerEntity
 from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_ON
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 
 from .commands import TotoWashletCode
-from .const import CONF_INFRARED_ENTITY_ID
+from .const import CONF_INFRARED_ENTITY_ID, received_command_signal
 from .entity import TotoWashletEntity
 
 PARALLEL_UPDATES = 1
@@ -73,6 +74,7 @@ class TotoWashletSwitch(
     ) -> None:
         """Initialize TOTO Washlet switch."""
         super().__init__(entry, unique_id_suffix=description.key)
+        self._entry_id = entry.entry_id
         self._attr_is_on: bool | None = None
         self._infrared_emitter_entity_id = infrared_entity_id
         self.entity_description = description
@@ -81,6 +83,14 @@ class TotoWashletSwitch(
         """Restore the last assumed state."""
         if (last_state := await self.async_get_last_state()) is not None:
             self._attr_is_on = last_state.state == STATE_ON
+
+        self.async_on_remove(
+            async_dispatcher_connect(
+                self.hass,
+                received_command_signal(self._entry_id),
+                self._handle_received_command,
+            )
+        )
 
     async def async_turn_on(self, **kwargs: object) -> None:
         """Turn on the Washlet setting."""
@@ -96,4 +106,16 @@ class TotoWashletSwitch(
             self.entity_description.turn_off_command_code.to_command()
         )
         self._attr_is_on = False
+        self.async_write_ha_state()
+
+    @callback
+    def _handle_received_command(self, command_code: TotoWashletCode) -> None:
+        """Update the switch state from a received remote command."""
+        if command_code == self.entity_description.turn_on_command_code:
+            self._attr_is_on = True
+        elif command_code == self.entity_description.turn_off_command_code:
+            self._attr_is_on = False
+        else:
+            return
+
         self.async_write_ha_state()

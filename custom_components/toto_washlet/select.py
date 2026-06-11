@@ -7,12 +7,13 @@ from dataclasses import dataclass
 from homeassistant.components.infrared import InfraredEmitterConsumerEntity
 from homeassistant.components.select import SelectEntity, SelectEntityDescription
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 
 from .commands import TotoWashletCode
-from .const import CONF_INFRARED_ENTITY_ID
+from .const import CONF_INFRARED_ENTITY_ID, received_command_signal
 from .entity import TotoWashletEntity
 
 PARALLEL_UPDATES = 1
@@ -122,12 +123,17 @@ class TotoWashletSelect(
     ) -> None:
         """Initialize TOTO Washlet select."""
         super().__init__(entry, unique_id_suffix=description.key)
+        self._entry_id = entry.entry_id
         self._attr_options = [
             option.option for option in description.washlet_options
         ]
         self._attr_current_option: str | None = None
         self._infrared_emitter_entity_id = infrared_entity_id
         self.entity_description = description
+        self._command_code_to_option = {
+            option.command_code: option.option
+            for option in description.washlet_options
+        }
 
     async def async_added_to_hass(self) -> None:
         """Restore the last assumed option."""
@@ -137,6 +143,14 @@ class TotoWashletSelect(
         ):
             self._attr_current_option = last_state.state
 
+        self.async_on_remove(
+            async_dispatcher_connect(
+                self.hass,
+                received_command_signal(self._entry_id),
+                self._handle_received_command,
+            )
+        )
+
     async def async_select_option(self, option: str) -> None:
         """Select a Washlet setting option."""
         command_code = next(
@@ -145,5 +159,14 @@ class TotoWashletSelect(
             if washlet_option.option == option
         )
         await self._send_command(command_code.to_command())
+        self._attr_current_option = option
+        self.async_write_ha_state()
+
+    @callback
+    def _handle_received_command(self, command_code: TotoWashletCode) -> None:
+        """Update the selected option from a received remote command."""
+        if (option := self._command_code_to_option.get(command_code)) is None:
+            return
+
         self._attr_current_option = option
         self.async_write_ha_state()
