@@ -74,6 +74,18 @@ class TotoWashletReceivedCommandEvent(
                 command_code,
             )
 
-        _LOGGER.debug("Received TOTO Washlet IR command: %s", event_type)
+        if frames:
+            _LOGGER.debug(
+                "Received TOTO Washlet IR command: event_type=%s, frames=%s",
+                event_type,
+                format_toto_frames(frames),
+            )
+        else:
+            _LOGGER.debug(
+                "Received undecodable TOTO Washlet IR signal: timing_count=%s, "
+                "timings=%s",
+                len(signal.timings),
+                signal.timings,
+            )
         self._trigger_event(event_type)
         self.async_write_ha_state()
