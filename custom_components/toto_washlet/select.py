@@ -168,5 +168,8 @@ class TotoWashletSelect(
         if (option := self._command_code_to_option.get(command_code)) is None:
             return
 
+        if option == self._attr_current_option:
+            return
+
         self._attr_current_option = option
         self.async_write_ha_state()

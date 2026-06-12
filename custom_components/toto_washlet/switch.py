@@ -112,10 +112,14 @@ class TotoWashletSwitch(
     def _handle_received_command(self, command_code: TotoWashletCode) -> None:
         """Update the switch state from a received remote command."""
         if command_code == self.entity_description.turn_on_command_code:
-            self._attr_is_on = True
+            is_on = True
         elif command_code == self.entity_description.turn_off_command_code:
-            self._attr_is_on = False
+            is_on = False
         else:
             return
 
+        if is_on == self._attr_is_on:
+            return
+
+        self._attr_is_on = is_on
         self.async_write_ha_state()
