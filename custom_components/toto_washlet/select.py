@@ -41,6 +41,10 @@ SELECT_DESCRIPTIONS: tuple[TotoWashletSelectEntityDescription, ...] = (
         icon="mdi:thermometer-water",
         washlet_options=(
             TotoWashletSelectOption(
+                option="off",
+                command_code=TotoWashletCode.TEMPERATURE_OFF,
+            ),
+            TotoWashletSelectOption(
                 option="1",
                 command_code=TotoWashletCode.WATER_TEMPERATURE_1,
             ),
@@ -96,7 +100,7 @@ SELECT_DESCRIPTIONS: tuple[TotoWashletSelectEntityDescription, ...] = (
         washlet_options=(
             TotoWashletSelectOption(
                 option="off",
-                command_code=TotoWashletCode.SEAT_TEMPERATURE_OFF,
+                command_code=TotoWashletCode.TEMPERATURE_OFF,
             ),
             TotoWashletSelectOption(
                 option="1",

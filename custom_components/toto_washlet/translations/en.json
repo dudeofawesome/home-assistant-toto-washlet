@@ -100,6 +100,7 @@
       "water_temperature": {
         "name": "Water temperature",
         "state": {
+          "off": "Off",
           "1": "1/5",
           "2": "2/5",
           "3": "3/5",
