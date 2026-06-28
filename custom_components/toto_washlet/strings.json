@@ -77,27 +77,6 @@
       "lower_water": {
         "name": "Lower water"
       },
-      "nozzle_up": {
-        "name": "Nozzle up"
-      },
-      "nozzle_down": {
-        "name": "Nozzle down"
-      },
-      "pressure_level_4": {
-        "name": "Pressure level 4"
-      },
-      "pressure_level_12": {
-        "name": "Pressure level 12"
-      },
-      "water_temperature_2": {
-        "name": "Water temperature 2/5"
-      },
-      "dryer_air_temperature_4": {
-        "name": "Dryer air temperature 4/5"
-      },
-      "seat_temperature_3": {
-        "name": "Seat temperature 3/5"
-      },
       "pulsate": {
         "name": "Pulsate"
       },
@@ -118,6 +97,56 @@
       }
     },
     "select": {
+      "water_temperature": {
+        "name": "Water temperature",
+        "state": {
+          "1": "1/5",
+          "2": "2/5",
+          "3": "3/5",
+          "4": "4/5",
+          "5": "5/5"
+        }
+      },
+      "dryer_air_temperature": {
+        "name": "Dryer air temperature",
+        "state": {
+          "1": "1/5",
+          "2": "2/5",
+          "3": "3/5",
+          "4": "4/5",
+          "5": "5/5"
+        }
+      },
+      "seat_temperature": {
+        "name": "Seat temperature",
+        "state": {
+          "1": "1/5",
+          "2": "2/5",
+          "3": "3/5",
+          "4": "4/5",
+          "5": "5/5"
+        }
+      },
+      "nozzle_position": {
+        "name": "Nozzle position",
+        "state": {
+          "1": "1/5",
+          "2": "2/5",
+          "3": "3/5",
+          "4": "4/5",
+          "5": "5/5"
+        }
+      },
+      "pressure_level": {
+        "name": "Pressure level",
+        "state": {
+          "1": "1/5",
+          "2": "2/5",
+          "3": "3/5",
+          "4": "4/5",
+          "5": "5/5"
+        }
+      },
       "user_profile": {
         "name": "User profile",
         "state": {

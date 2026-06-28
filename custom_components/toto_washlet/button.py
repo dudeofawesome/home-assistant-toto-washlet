@@ -106,48 +106,6 @@ BUTTON_DESCRIPTIONS: tuple[TotoWashletButtonEntityDescription, ...] = (
         command_code=TotoWashletCode.LOWER_WATER,
     ),
     TotoWashletButtonEntityDescription(
-        key="nozzle_up",
-        translation_key="nozzle_up",
-        icon="mdi:arrow-up",
-        command_code=TotoWashletCode.NOZZLE_UP,
-    ),
-    TotoWashletButtonEntityDescription(
-        key="nozzle_down",
-        translation_key="nozzle_down",
-        icon="mdi:arrow-down",
-        command_code=TotoWashletCode.NOZZLE_DOWN,
-    ),
-    TotoWashletButtonEntityDescription(
-        key="pressure_level_4",
-        translation_key="pressure_level_4",
-        icon="mdi:water-minus",
-        command_code=TotoWashletCode.PRESSURE_LEVEL_4,
-    ),
-    TotoWashletButtonEntityDescription(
-        key="pressure_level_12",
-        translation_key="pressure_level_12",
-        icon="mdi:water-plus",
-        command_code=TotoWashletCode.PRESSURE_LEVEL_12,
-    ),
-    TotoWashletButtonEntityDescription(
-        key="water_temperature_2",
-        translation_key="water_temperature_2",
-        icon="mdi:thermometer-water",
-        command_code=TotoWashletCode.WATER_TEMPERATURE_2,
-    ),
-    TotoWashletButtonEntityDescription(
-        key="dryer_air_temperature_4",
-        translation_key="dryer_air_temperature_4",
-        icon="mdi:thermometer",
-        command_code=TotoWashletCode.DRYER_AIR_TEMPERATURE_4,
-    ),
-    TotoWashletButtonEntityDescription(
-        key="seat_temperature_3",
-        translation_key="seat_temperature_3",
-        icon="mdi:thermometer",
-        command_code=TotoWashletCode.SEAT_TEMPERATURE_3,
-    ),
-    TotoWashletButtonEntityDescription(
         key="lid_open_close",
         translation_key="lid_open_close",
         icon="mdi:toilet",
