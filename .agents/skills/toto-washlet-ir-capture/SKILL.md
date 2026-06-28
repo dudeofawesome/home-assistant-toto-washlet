@@ -8,7 +8,7 @@ Captures live IR codes from an ESPHome IR device.
 ## Process
 
 1. check if usbserial device available ie: /dev/cu.usbserial-0001
-   - if available use `pio device monitor -p /dev/cu.usbserial-0001 -b 115200`
+   - if available use `pio device monitor -p /dev/cu.usbserial-0001 -b 115200` (needs interactive terminal)
    - otherwise try connecting remotely
      1. create minimal config: `scripts/gen-minimal-config.sh /tmp/washlet-proxy-config.yaml`
      2. watch the logs: `esphome logs --device 10.0.16.10 /tmp/washlet-proxy-config.yaml`
