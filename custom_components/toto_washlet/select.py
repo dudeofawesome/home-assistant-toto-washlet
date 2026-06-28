@@ -95,6 +95,10 @@ SELECT_DESCRIPTIONS: tuple[TotoWashletSelectEntityDescription, ...] = (
         icon="mdi:car-seat-heater",
         washlet_options=(
             TotoWashletSelectOption(
+                option="off",
+                command_code=TotoWashletCode.SEAT_TEMPERATURE_OFF,
+            ),
+            TotoWashletSelectOption(
                 option="1",
                 command_code=TotoWashletCode.SEAT_TEMPERATURE_1,
             ),
