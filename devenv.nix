@@ -8,8 +8,9 @@
 
 {
   # https://devenv.sh/packages/
-  packages = [
-    pkgs.esphome
+  packages = with pkgs; [
+    esphome
+    platformio
   ];
 
   # https://devenv.sh/languages/
