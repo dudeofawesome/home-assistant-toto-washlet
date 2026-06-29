@@ -11,6 +11,7 @@
   packages = with pkgs; [
     esphome
     platformio
+    ruff
   ];
 
   # https://devenv.sh/languages/
