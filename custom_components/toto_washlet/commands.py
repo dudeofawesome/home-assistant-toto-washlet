@@ -146,6 +146,15 @@ class TotoWashletCode(Enum):
                 if frames[0] == code.value[0] and len(code.value) == 1:
                     return code
 
+            command_matches = [
+                code
+                for code in cls
+                if len(code.value) == 1
+                and frames[0].command == code.value[0].command
+            ]
+            if len(command_matches) == 1:
+                return command_matches[0]
+
             matches = [
                 code
                 for code in cls
