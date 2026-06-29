@@ -127,12 +127,18 @@ class TotoWashletCode(Enum):
     @classmethod
     def from_raw_timings(cls, timings: list[int]) -> TotoWashletCode | None:
         """Decode raw IR timings into a known TOTO Washlet code."""
-        frames = _decode_timings(timings)
+        frames = decode_toto_frames(timings)
         if not frames:
             return None
 
+        return cls.from_frames(frames)
+
+    @classmethod
+    def from_frames(cls, frames: Iterable[TotoData]) -> TotoWashletCode | None:
+        """Return the known TOTO Washlet code matching decoded frames."""
+        frames = tuple(frames)
         for code in cls:
-            if tuple(frames) == code.value:
+            if frames == code.value:
                 return code
 
         if len(frames) == 1:
@@ -195,7 +201,7 @@ def _append_bits(timings: list[int], value: int, bit_count: int) -> None:
         timings.append(-BIT_ONE_LOW if value & (1 << bit) else -BIT_ZERO_LOW)
 
 
-def _decode_timings(timings: list[int]) -> list[TotoData] | None:
+def decode_toto_frames(timings: list[int]) -> list[TotoData] | None:
     """Decode raw timings into de-duplicated TOTO frames."""
     frames: list[TotoData] = []
     index = 0
@@ -210,6 +216,14 @@ def _decode_timings(timings: list[int]) -> list[TotoData] | None:
         index += _encoded_frame_length()
 
     return frames or None
+
+
+def format_toto_frames(frames: Iterable[TotoData]) -> str:
+    """Format TOTO frames for diagnostic logs."""
+    return ", ".join(
+        f"0x{frame.rc_code_1:X} / 0x{frame.rc_code_2:X} / 0x{frame.command:02X}"
+        for frame in frames
+    )
 
 
 def _decode_frame_at(timings: list[int], index: int) -> TotoData | None:

@@ -14,7 +14,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
-from .commands import TotoWashletCode
+from .commands import TotoWashletCode, decode_toto_frames, format_toto_frames
 from .const import CONF_INFRARED_RECEIVER_ENTITY_ID, received_command_signal
 from .entity import TotoWashletEntity
 
@@ -63,7 +63,8 @@ class TotoWashletReceivedCommandEvent(
     @callback
     def _handle_signal(self, signal: InfraredReceivedSignal) -> None:
         """Handle a received IR signal."""
-        command_code = TotoWashletCode.from_raw_timings(signal.timings)
+        frames = decode_toto_frames(signal.timings)
+        command_code = TotoWashletCode.from_frames(frames) if frames else None
         if command_code is None:
             event_type = _EVENT_TYPE_UNKNOWN
         else:
