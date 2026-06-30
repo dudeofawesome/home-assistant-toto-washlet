@@ -6,4 +6,4 @@ This integration uses an [ESPHome IR proxy](https://www.home-assistant.io/blog/2
 
 Similar integrations include the [LG](https://github.com/home-assistant/core/tree/dev/homeassistant/components/lg_infrared) and [Marantz](https://github.com/home-assistant/core/tree/dev/homeassistant/components/marantz_infrared) IR components
 
-Run non-basic commands from inside the devenv (`devenv shell --quiet {command}`), which will not work in Codex's sandbox.
+Run non-basic commands from inside the devenv (`devenv shell --quiet -- {command}`), which will not work in Codex's sandbox.

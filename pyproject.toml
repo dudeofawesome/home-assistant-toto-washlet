@@ -3,6 +3,13 @@
   version = "0.0.1"
   requires-python = ">=3.14.2"
 
+[dependency-groups]
+  dev = [
+    "infrared-protocols==1.1.0",
+    "pytest>=9.0.3",
+    "pytest-homeassistant-custom-component==0.13.338",
+]
+
 [tool.ruff]
   target-version = "py314"
   line-length = 88
@@ -31,3 +38,12 @@
   [tool.ruff.format]
     quote-style = "double"
     indent-style = "space"
+
+[tool.pytest.ini_options]
+  minversion = "6.0"
+  asyncio_mode = "auto"
+  addopts = "-ra -q"
+  testpaths = [
+    "tests",
+    "integration",
+  ]
