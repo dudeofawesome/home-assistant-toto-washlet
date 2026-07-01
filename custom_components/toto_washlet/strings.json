@@ -183,6 +183,9 @@
       },
       "bowl_light": {
         "name": "Bowl light"
+      },
+      "beep_sound": {
+        "name": "Beep sound"
       }
     },
     "event": {

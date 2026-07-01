@@ -79,6 +79,8 @@ class TotoWashletCode(Enum):
     ECO_FLUSH = (TotoData(0xB6),)
     BOWL_LIGHT_ON = (TotoData(0x39, 0x4),)
     BOWL_LIGHT_OFF = (TotoData(0x39, 0x8),)
+    BEEP_SOUND_ON = (TotoData(0xCC, 0x4),)
+    BEEP_SOUND_OFF = (TotoData(0xCC, 0x8),)
     DRYER = (TotoData(0xC0),)
     POWER_DEODORIZER = (TotoData(0x7C),)
     WAND_CLEAN = (TotoData(0x11),)

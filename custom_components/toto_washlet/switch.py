@@ -50,6 +50,13 @@ SWITCH_DESCRIPTIONS: tuple[TotoWashletSwitchEntityDescription, ...] = (
         turn_on_command_code=TotoWashletCode.BOWL_LIGHT_ON,
         turn_off_command_code=TotoWashletCode.BOWL_LIGHT_OFF,
     ),
+    TotoWashletSwitchEntityDescription(
+        key="beep_sound",
+        translation_key="beep_sound",
+        icon="mdi:volume-high",
+        turn_on_command_code=TotoWashletCode.BEEP_SOUND_ON,
+        turn_off_command_code=TotoWashletCode.BEEP_SOUND_OFF,
+    ),
 )
 
 
