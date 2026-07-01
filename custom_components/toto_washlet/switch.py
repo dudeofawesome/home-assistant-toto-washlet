@@ -44,6 +44,13 @@ SWITCH_DESCRIPTIONS: tuple[TotoWashletSwitchEntityDescription, ...] = (
         turn_off_command_code=TotoWashletCode.AUTO_LID_OPEN_OFF,
     ),
     TotoWashletSwitchEntityDescription(
+        key="close_lid_before_flushing",
+        translation_key="close_lid_before_flushing",
+        icon="mdi:toilet",
+        turn_on_command_code=TotoWashletCode.CLOSE_LID_BEFORE_FLUSHING_ON,
+        turn_off_command_code=TotoWashletCode.CLOSE_LID_BEFORE_FLUSHING_OFF,
+    ),
+    TotoWashletSwitchEntityDescription(
         key="bowl_light",
         translation_key="bowl_light",
         icon="mdi:lightbulb",

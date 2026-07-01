@@ -181,6 +181,9 @@
       "auto_lid_open": {
         "name": "Auto lid open"
       },
+      "close_lid_before_flushing": {
+        "name": "Close lid before flushing"
+      },
       "bowl_light": {
         "name": "Bowl light"
       },

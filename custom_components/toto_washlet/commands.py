@@ -122,6 +122,8 @@ class TotoWashletCode(Enum):
     AUTO_LID_OPEN_ON = (TotoData(0x9C),)
     AUTO_FLUSH_OFF = (TotoData(0x3C),)
     AUTO_FLUSH_ON = (TotoData(0xDC),)
+    CLOSE_LID_BEFORE_FLUSHING_ON = (TotoData(0x66, 0x4),)
+    CLOSE_LID_BEFORE_FLUSHING_OFF = (TotoData(0x66, 0x8),)
     MYSTERY = (TotoData(0x3D),)
 
     def to_command(self) -> TotoCommand:
