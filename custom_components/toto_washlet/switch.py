@@ -43,6 +43,13 @@ SWITCH_DESCRIPTIONS: tuple[TotoWashletSwitchEntityDescription, ...] = (
         turn_on_command_code=TotoWashletCode.AUTO_LID_OPEN_ON,
         turn_off_command_code=TotoWashletCode.AUTO_LID_OPEN_OFF,
     ),
+    TotoWashletSwitchEntityDescription(
+        key="bowl_light",
+        translation_key="bowl_light",
+        icon="mdi:lightbulb",
+        turn_on_command_code=TotoWashletCode.BOWL_LIGHT_ON,
+        turn_off_command_code=TotoWashletCode.BOWL_LIGHT_OFF,
+    ),
 )
 
 

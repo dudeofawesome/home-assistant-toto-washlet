@@ -180,6 +180,9 @@
       },
       "auto_lid_open": {
         "name": "Auto lid open"
+      },
+      "bowl_light": {
+        "name": "Bowl light"
       }
     },
     "event": {

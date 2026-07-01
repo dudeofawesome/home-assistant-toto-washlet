@@ -77,6 +77,8 @@ class TotoWashletCode(Enum):
     FULL_FLUSH = (TotoData(0xB0),)
     LIGHT_FLUSH = (TotoData(0x88),)
     ECO_FLUSH = (TotoData(0xB6),)
+    BOWL_LIGHT_ON = (TotoData(0x39, 0x4),)
+    BOWL_LIGHT_OFF = (TotoData(0x39, 0x8),)
     DRYER = (TotoData(0xC0),)
     POWER_DEODORIZER = (TotoData(0x7C),)
     WAND_CLEAN = (TotoData(0x11),)
@@ -149,8 +151,7 @@ class TotoWashletCode(Enum):
             command_matches = [
                 code
                 for code in cls
-                if len(code.value) == 1
-                and frames[0].command == code.value[0].command
+                if len(code.value) == 1 and frames[0].command == code.value[0].command
             ]
             if len(command_matches) == 1:
                 return command_matches[0]
