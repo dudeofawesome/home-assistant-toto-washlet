@@ -54,10 +54,9 @@ buttons without more mapping.
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | Pressure decrease       | `0xC / 0x0 / 0x20`, then `0x4 / 0x0 / 0x20`                                                                            | Pressed twice.                                                                                |
 | Pressure increase       | `0xC / 0x0 / 0x20`                                                                                                     | Pressed once.                                                                                 |
-| Water temperature       | `0xA / 0x9 / 0xEC`                                                                                                     | User identified this as level `2/5`.                                                          |
-| Water temperature sweep | `0x8 / 0x9 / 0xEC`, `0x0 / 0x9 / 0xEC`, `0xA / 0x9 / 0xEC`, `0x1 / 0x9 / 0xEC`, `0x9 / 0x9 / 0xEC`, `0xD / 0x9 / 0xEC` | User stepped through all levels and ended on `3/5`; exact level mapping still needs labeling. |
+| Water temperature       | `0x0 / 0x0 / 0xEC`, `0x8 / 0x0 / 0xEC`, `0xA / 0x0 / 0xEC`, `0x1 / 0x0 / 0xEC`, `0x9 / 0x0 / 0xEC`, `0xD / 0x0 / 0xEC` | Confirmed as off, then levels `1/5` through `5/5`, in both ascending and descending sweeps.     |
 | Dryer air temperature   | `0x2 / 0x0 / 0x1C`                                                                                                     | User identified this as level `4/5`.                                                          |
-| Seat temperature        | `0x1 / 0x1 / 0xEC`                                                                                                     | User identified this as level `3/5`.                                                          |
+| Seat temperature        | `0x0 / 0x0 / 0xEC`, `0x0 / 0x8 / 0xEC`, `0x0 / 0xA / 0xEC`, `0x0 / 0x1 / 0xEC`, `0x0 / 0x9 / 0xEC`, `0x0 / 0xD / 0xEC` | Confirmed as off, then levels `1/5` through `5/5`, in both ascending and descending sweeps.     |
 
 ## Settings And Automation Controls
 
@@ -73,6 +72,8 @@ buttons without more mapping.
 | Auto lid open on       | `0x0 / 0x0 / 0x9C`   | Confirmed.                                                                                                                                        |
 | Auto flush off         | `0x0 / 0x0 / 0x3C`   | Confirmed.                                                                                                                                        |
 | Auto flush on          | `0x0 / 0x0 / 0xDC`   | Confirmed.                                                                                                                                        |
+| Close lid before flushing on  | `0x4 / 0x0 / 0x66` | Confirmed on S7A. The manual calls the same model-dependent setting "Auto flush lid relation" on S7. |
+| Close lid before flushing off | `0x8 / 0x0 / 0x66` | Confirmed on S7A. The manual calls the same model-dependent setting "Auto flush lid relation" on S7. |
 | Mystery button         | `0x0 / 0x0 / 0x3D`   | Function unknown.                                                                                                                                 |
 
 ## Buttons With No IR Decode
@@ -84,6 +85,4 @@ These buttons produced no `remote.toto` decode during the capture attempts:
 
 ## Follow-Up Capture Targets
 
-- Map all water temperature levels to their exact `rc_code_1` values.
 - Map all dryer air temperature levels.
-- Map all seat temperature levels.

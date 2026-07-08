@@ -10,9 +10,37 @@ from custom_components.toto_washlet.commands import TotoData, TotoWashletCode
 def test_matches_exact_frame() -> None:
     """An exact frame matches its command."""
     assert (
-        TotoWashletCode.from_frames(TotoWashletCode.REAR.value)
-        is TotoWashletCode.REAR
+        TotoWashletCode.from_frames(TotoWashletCode.REAR.value) is TotoWashletCode.REAR
     )
+
+
+@pytest.mark.parametrize(
+    ("frame", "payload", "expected_code"),
+    [
+        (TotoData(0x39, 0x4), 0x403979, TotoWashletCode.BOWL_LIGHT_ON),
+        (TotoData(0x39, 0x8), 0x8039B9, TotoWashletCode.BOWL_LIGHT_OFF),
+        (TotoData(0xCC, 0x4), 0x40CC8C, TotoWashletCode.BEEP_SOUND_ON),
+        (TotoData(0xCC, 0x8), 0x80CC4C, TotoWashletCode.BEEP_SOUND_OFF),
+        (
+            TotoData(0x66, 0x4),
+            0x406626,
+            TotoWashletCode.CLOSE_LID_BEFORE_FLUSHING_ON,
+        ),
+        (
+            TotoData(0x66, 0x8),
+            0x8066E6,
+            TotoWashletCode.CLOSE_LID_BEFORE_FLUSHING_OFF,
+        ),
+    ],
+)
+def test_captured_stateful_frames(
+    frame: TotoData,
+    payload: int,
+    expected_code: TotoWashletCode,
+) -> None:
+    """Captured stateful frames match and encode their checksums."""
+    assert frame.payload == payload
+    assert TotoWashletCode.from_frames([frame]) is expected_code
 
 
 @pytest.mark.parametrize(
