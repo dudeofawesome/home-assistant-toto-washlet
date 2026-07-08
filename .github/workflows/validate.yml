@@ -14,8 +14,10 @@ jobs:
   validate-hacs:
     name: HACS
     runs-on: ubuntu-latest
-    permissions: {}
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
       - name: HACS validation
         uses: hacs/action@main
         with:
