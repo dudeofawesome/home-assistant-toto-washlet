@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Any
 
 import voluptuous as vol
-
 from homeassistant.components.infrared import (
     DOMAIN as INFRARED_DOMAIN,
     async_get_emitters,
