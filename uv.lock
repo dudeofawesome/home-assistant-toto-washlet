@@ -1031,7 +1031,7 @@ wheels = [
 
 [[package]]
 name = "home-assistant-toto-washlet"
-version = "0.0.1"
+version = "1.0.0"
 source = { virtual = "." }
 
 [package.dev-dependencies]
