@@ -279,7 +279,9 @@ class TotoWashletSelect(
         }
 
     async def async_added_to_hass(self) -> None:
-        """Restore the last assumed option."""
+        """Track emitter availability and restore the last assumed option."""
+        await super().async_added_to_hass()
+
         if (
             (last_state := await self.async_get_last_state()) is not None
             and last_state.state in self.options

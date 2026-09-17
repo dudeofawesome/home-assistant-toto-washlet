@@ -101,7 +101,9 @@ class TotoWashletSwitch(
         self.entity_description = description
 
     async def async_added_to_hass(self) -> None:
-        """Restore the last assumed state."""
+        """Track emitter availability and restore the last assumed state."""
+        await super().async_added_to_hass()
+
         if (last_state := await self.async_get_last_state()) is not None:
             self._attr_is_on = last_state.state == STATE_ON
 
