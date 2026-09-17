@@ -11,7 +11,7 @@
 
 ## Prerequisites
 
-- **Home Assistant 2026.4.0** or newer
+- **Home Assistant 2026.6.0** or newer
 - **Home Assistant IR Integration** must be configured and working
 
 ## Installation
